@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Owner Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+        .sidebar {
+            min-height: 100vh;
+            background-color: #343a40;
+            color: white;
+        }
+        .nav-link {
+            color: #c2c7d0;
+            cursor: pointer;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: white;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
+        .card-stat {
+            border-left: 4px solid #007bff;
+        }
+        .table-responsive {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .section-content {
+            display: none;
+        }
+        .section-content.active {
+            display: block;
+        }
+        
+        /* Admin Login Overlay */
+        #adminLoginOverlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #343a40;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .admin-login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Admin Login Overlay -->
+<div id="adminLoginOverlay">
+    <div class="admin-login-box">
+        <h3 class="mb-4"><i class="fas fa-lock text-danger me-2"></i>Owner Access Only</h3>
+        <div class="mb-3">
+            <input type="password" id="adminPasswordInput" class="form-control form-control-lg" placeholder="Enter Owner Password">
+        </div>
+        <p id="adminLoginError" class="text-danger" style="display: none;">Invalid Password!</p>
+        <button id="adminLoginBtn" onclick="adminLogin()" class="btn btn-primary btn-lg w-100">Login to Dashboard</button>
+        <a href="index.html" class="d-block mt-3 text-muted">Back to Website</a>
+    </div>
+</div>
+
+<div class="container-fluid" id="mainDashboard" style="display: none;">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-2 d-none d-md-block sidebar py-4">
+            <h4 class="text-center mb-4"><i class="fas fa-dumbbell text-warning me-2"></i>Gym Admin</h4>
+            <ul class="nav flex-column px-2">
+                <li class="nav-item">
+                    <a class="nav-link active" onclick="showSection('dashboard')">
+                        <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="showSection('users')">
+                        <i class="fas fa-users me-2"></i> Users
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="showSection('transactions')">
+                        <i class="fas fa-money-bill-wave me-2"></i> Transactions
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="showSection('messages')">
+                        <i class="fas fa-envelope me-2"></i> Messages
+                    </a>
+                </li>
+                <li class="nav-item mt-4">
+                    <a class="nav-link text-danger" onclick="adminLogout()" style="cursor: pointer;">
+                        <i class="fas fa-sign-out-alt me-2"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="col-md-10 ms-sm-auto px-md-4 py-4">
+            
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="section-content active">
+                <h2 class="mb-4">Database Overview</h2>
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card card-stat mb-3 shadow-sm border-0" style="border-left-color: #007bff !important;">
+                            <div class="card-body">
+                                <h5 class="text-muted">Total Users</h5>
+                                <h2 id="stat-users">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card card-stat mb-3 shadow-sm border-0" style="border-left-color: #28a745 !important;">
+                            <div class="card-body">
+                                <h5 class="text-muted">Total Revenue (₹)</h5>
+                                <h2 id="stat-revenue">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card card-stat mb-3 shadow-sm border-0" style="border-left-color: #ffc107 !important;">
+                            <div class="card-body">
+                                <h5 class="text-muted">Transactions</h5>
+                                <h2 id="stat-transactions">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card card-stat mb-3 shadow-sm border-0" style="border-left-color: #dc3545 !important;">
+                            <div class="card-body">
+                                <h5 class="text-muted">Messages</h5>
+                                <h2 id="stat-messages">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Section -->
+            <div id="users" class="section-content">
+                <h2 class="mb-4">Registered Users</h2>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Join Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Transactions Section -->
+            <div id="transactions" class="section-content">
+                <h2 class="mb-4">Payment Transactions</h2>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>User Email</th>
+                                <th>Plan</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactions-table-body">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Messages Section -->
+            <div id="messages" class="section-content">
+                <h2 class="mb-4">Contact Messages</h2>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Subject</th>
+                                <th>Message</th>
+                            </tr>
+                        </thead>
+                        <tbody id="messages-table-body">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</div>
+
+<script>
+    // Automatically detect backend URL depending on how the page is opened
+    const API_URL = 'http://localhost:3000/api';
+    let adminToken = localStorage.getItem('adminToken') || '';
+
+    // Login Function
+    
+    document.getElementById('adminPasswordInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            adminLogin();
+        }
+    });
+
+    async function adminLogin() {
+        const btn = document.getElementById('adminLoginBtn');
+        const err = document.getElementById('adminLoginError');
+        if(btn) { btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...'; btn.disabled = true; }
+        err.style.display = 'none';
+        
+
+        const passwordInput = document.getElementById('adminPasswordInput').value;
+        try {
+            const res = await fetch(`${API_URL}/admin/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: passwordInput })
+            });
+            const data = await res.json();
+            
+            if (res.ok && data.token) {
+                adminToken = data.token;
+                localStorage.setItem('adminToken', adminToken);
+                showDashboard();
+            } else {
+                
+                if(btn) { btn.innerHTML = 'Login to Dashboard'; btn.disabled = false; }
+                err.innerText = data.message || 'Invalid Password!';
+                err.style.display = 'block';
+
+            }
+        } catch (error) {
+            console.error('Login Failed', error);
+            
+            if(btn) { btn.innerHTML = 'Login to Dashboard'; btn.disabled = false; }
+            err.innerText = 'Server error or not running.';
+            err.style.display = 'block';
+
+        }
+    }
+
+    function showDashboard() {
+        document.getElementById('adminLoginOverlay').style.display = 'none';
+        document.getElementById('mainDashboard').style.display = 'block';
+        init();
+    }
+
+    function adminLogout() {
+        localStorage.removeItem('adminToken');
+        adminToken = '';
+        document.getElementById('adminLoginOverlay').style.display = 'flex';
+        document.getElementById('mainDashboard').style.display = 'none';
+        document.getElementById('adminPasswordInput').value = '';
+    }
+
+    // Helper for fetch with Auth
+    async function fetchWithAuth(url) {
+        const response = await fetch(url, {
+            headers: {
+                'Authorization': adminToken
+            }
+        });
+        if (response.status === 403 || response.status === 401) {
+            adminLogout(); // Token invalid
+            throw new Error('Unauthorized');
+        }
+        return response;
+    }
+
+    function showSection(sectionId) {
+        // Hide all sections
+        document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
+        // Show active section
+        document.getElementById(sectionId).classList.add('active');
+        
+        // Update nav active state
+        document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+
+        // Load data specific to section if needed, 
+        // but we'll just load everything on init for simplicity
+    }
+
+    async function loadDashboardStats() {
+        try {
+            const res = await fetchWithAuth(`${API_URL}/admin/stats`);
+            const data = await res.json();
+            document.getElementById('stat-users').innerText = data.users;
+            document.getElementById('stat-revenue').innerText = data.revenue;
+            document.getElementById('stat-transactions').innerText = data.transactions;
+            document.getElementById('stat-messages').innerText = data.messages;
+        } catch (error) {
+            console.error('Error loading stats:', error);
+        }
+    }
+
+    async function loadUsers() {
+        try {
+            const res = await fetchWithAuth(`${API_URL}/admin/users`);
+            const users = await res.json();
+            const tbody = document.getElementById('users-table-body');
+            tbody.innerHTML = '';
+            users.forEach(user => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>${user.name}</td>
+                        <td>${user.email}</td>
+                        <td>${user.joinDate}</td>
+                    </tr>
+                `;
+            });
+        } catch (error) {
+            console.error('Error loading users:', error);
+        }
+    }
+
+    async function loadTransactions() {
+        try {
+            const res = await fetchWithAuth(`${API_URL}/admin/transactions`);
+            const transactions = await res.json();
+            const tbody = document.getElementById('transactions-table-body');
+            tbody.innerHTML = '';
+            transactions.forEach(t => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${t.id}</td>
+                        <td>${t.userEmail}</td>
+                        <td>${t.planName}</td>
+                        <td>₹${t.amount}</td>
+                        <td>${t.date}</td>
+                        <td><span class="badge bg-success">${t.status}</span></td>
+                    </tr>
+                `;
+            });
+        } catch (error) {
+            console.error('Error loading transactions:', error);
+        }
+    }
+
+    async function loadMessages() {
+        try {
+            const res = await fetchWithAuth(`${API_URL}/admin/messages`);
+            const messages = await res.json();
+            const tbody = document.getElementById('messages-table-body');
+            tbody.innerHTML = '';
+            messages.forEach(msg => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="white-space:nowrap">${msg.date}</td>
+                        <td>${msg.name}</td>
+                        <td>${msg.email}</td>
+                        <td>${msg.subject}</td>
+                        <td>${msg.message}</td>
+                    </tr>
+                `;
+            });
+        } catch (error) {
+            console.error('Error loading messages:', error);
+        }
+    }
+
+    // Init function to load all data
+    function init() {
+        if (!adminToken) {
+            // Wait for user to login
+            return;
+        }
+        loadDashboardStats();
+        loadUsers();
+        loadTransactions();
+        loadMessages();
+    }
+
+    // Call init when page loads
+    window.addEventListener('DOMContentLoaded', () => {
+        if (adminToken) {
+            // Already logged in, test token by attempting to load
+            showDashboard();
+        }
+    });
+</script>
+
+</body>
+</html>

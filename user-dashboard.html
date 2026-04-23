@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard | RK Fitness</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Poppins', sans-serif;
+        }
+        .sidebar {
+            min-height: 100vh;
+            background-color: #2c3e50;
+            color: white;
+        }
+        .nav-link {
+            color: #c2c7d0;
+            cursor: pointer;
+            padding: 12px 15px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: white;
+            background-color: rgba(255,255,255,0.1);
+        }
+        .card-stat {
+            border-left: 4px solid #e50914;
+        }
+        .table-responsive {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .section-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .section-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .profile-header {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .profile-avatar {
+            font-size: 80px;
+            color: #e50914;
+            margin-bottom: 15px;
+        }
+        .btn-custom {
+            background-color: #e50914;
+            color: white;
+            border: none;
+        }
+        .btn-custom:hover {
+            background-color: #b90710;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid" id="mainDashboard">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav class="col-md-3 col-lg-2 d-md-block sidebar py-4 collapse show" id="sidebarMenu">
+            <div class="text-center mb-4">
+                <a href="index.html" style="text-decoration: none; color: white;">
+                    <h4><i class="fas fa-dumbbell text-danger me-2"></i>RK Fitness</h4>
+                </a>
+            </div>
+            <div class="px-3 mb-4 text-center">
+                <i class="fas fa-user-circle fa-3x mb-2 text-danger"></i>
+                <h6 id="sidebarName" class="text-white">User Name</h6>
+                <small id="sidebarEmail" class="text-muted">user contact</small>
+            </div>
+            <ul class="nav flex-column px-2">
+                <li class="nav-item">
+                    <a class="nav-link active" onclick="showSection('dashboard')">
+                        <i class="fas fa-home me-2"></i> Overview
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="showSection('membership')">
+                        <i class="fas fa-id-card me-2"></i> My Membership
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="showSection('transactions')">
+                        <i class="fas fa-history me-2"></i> Payment History
+                    </a>
+                </li>
+                <li class="nav-item mt-4">
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-arrow-left me-2"></i> Back to Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-danger mt-2" onclick="userLogout()" style="cursor: pointer;">
+                        <i class="fas fa-sign-out-alt me-2"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+            
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom d-md-none">
+                <h1 class="h2">Dashboard</h1>
+            </div>
+
+            <!-- Overview Section -->
+            <div id="dashboard" class="section-content active">
+                <h2 class="mb-4">Welcome Back, <span id="welcomeName">User</span>!</h2>
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-3">
+                        <div class="card card-stat shadow-sm border-0 h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5 class="text-muted mb-1">Current Status</h5>
+                                        <h3 id="statStatus" class="mb-0 text-success">Active</h3>
+                                        <small class="text-muted">Since <span id="statJoinDate">Today</span></small>
+                                    </div>
+                                    <i class="fas fa-check-circle fa-3x text-success opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="card card-stat shadow-sm border-0 h-100" style="border-left-color: #f39c12;">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5 class="text-muted mb-1">Active Plan</h5>
+                                        <h3 id="statPlan" class="mb-0 text-warning">Free Tier</h3>
+                                        <a href="index.html#pricing" class="btn btn-sm btn-outline-warning mt-2">Upgrade</a>
+                                    </div>
+                                    <i class="fas fa-star fa-3x text-warning opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Membership Section -->
+            <div id="membership" class="section-content">
+                <h2 class="mb-4">Membership Details</h2>
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <h3 id="profileName">User Name</h3>
+                    <p id="profileEmail" class="text-muted mb-4">user contact</p>
+                    
+                    <div class="row text-start mt-4 border-top pt-4">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-muted">Membership Level</h6>
+                            <h5 id="memLevel">Free Tier</h5>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-muted">Member Since</h6>
+                            <h5 id="memDate">Today</h5>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Account Status</h6>
+                            <h5><span class="badge bg-success">Active</span></h5>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Next Billing</h6>
+                            <h5><span class="badge bg-secondary">N/A</span></h5>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-3 border-top">
+                        <a href="index.html#pricing" class="btn btn-custom px-4 py-2">View Premium Plans</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transactions Section -->
+            <div id="transactions" class="section-content">
+                <h2 class="mb-4">Payment History</h2>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Date</th>
+                                <th>Plan Name</th>
+                                <th>Amount</th>
+                                <th>Method</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionTableBody">
+                            <tr><td colspan="5" class="text-center py-4 text-muted">Loading transactions...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</div>
+
+<script>
+    // State management
+    let currentUser = null;
+
+    // Check if user is logged in
+    function checkAuth() {
+        const storedUser = localStorage.getItem('fitcore_currentUser');
+        if (!storedUser) {
+            alert('Please login to view your dashboard.');
+            window.location.href = 'index.html';
+            return false;
+        }
+        currentUser = JSON.parse(storedUser);
+        return true;
+    }
+
+    // Navigation logic
+    function showSection(sectionId) {
+        document.querySelectorAll('.section-content').forEach(el => {
+            el.classList.remove('active');
+        });
+        document.getElementById(sectionId).classList.add('active');
+        
+        document.querySelectorAll('.nav-link').forEach(el => {
+            el.classList.remove('active');
+        });
+        event.currentTarget.classList.add('active');
+    }
+
+    // Load user data into UI
+    async function loadUserData() {
+        if (!checkAuth()) return;
+        
+        // Populate static details
+        const nameElems = document.querySelectorAll('#sidebarName, #welcomeName, #profileName');
+        nameElems.forEach(el => el.innerText = currentUser.name);
+        
+        const emailElems = document.querySelectorAll('#sidebarEmail, #profileEmail');
+        emailElems.forEach(el => el.innerText = currentUser.mobile || currentUser.email);
+        
+        const joinDate = currentUser.joinDate || new Date().toLocaleDateString();
+        document.getElementById('statJoinDate').innerText = joinDate;
+        document.getElementById('memDate').innerText = joinDate;
+        
+        const planName = currentUser.membership || 'Free Tier';
+        document.getElementById('statPlan').innerText = planName;
+        document.getElementById('memLevel').innerText = planName;
+        
+        // Fetch transactions
+        try {
+            const response = await fetch(`http://localhost:3000/api/transactions/${currentUser.email}`);
+            const transactions = await response.json();
+            
+            const tbody = document.getElementById('transactionTableBody');
+            if (transactions.length > 0) {
+                tbody.innerHTML = transactions.map(t => `
+                    <tr>
+                        <td>${t.date.split(',')[0]}</td>
+                        <td>${t.planName}</td>
+                        <td class="text-danger fw-bold">${t.amount}</td>
+                        <td>${t.paymentMethod}</td>
+                        <td><span class="badge bg-success">${t.status}</span></td>
+                    </tr>
+                `).join('');
+            } else {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-muted">No transactions found. Upgrade your plan to see history.</td></tr>';
+            }
+        } catch (error) {
+            console.error('Error fetching transactions:', error);
+            document.getElementById('transactionTableBody').innerHTML = '<tr><td colspan="5" class="text-center py-4 text-danger">Failed to load transactions.</td></tr>';
+        }
+    }
+
+    // Logout
+    function userLogout() {
+        localStorage.removeItem('fitcore_currentUser');
+        window.location.href = 'index.html';
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', loadUserData);
+</script>
+</body>
+</html>

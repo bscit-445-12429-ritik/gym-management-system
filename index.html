@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitCore | Transform Your Body</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 512 512%22><path fill=%22%23e50914%22 d=%22M104.6 139.4C114.5 131.9 128.1 133.1 136.6 142.6L182.6 196.6C190.1 205.1 188.9 218.7 179.4 226.6L133.4 262.6C123.9 270.1 110.3 268.9 101.8 259.4L55.8 205.4C47.3 195.9 48.5 182.3 58.4 174.4L104.6 139.4zM375.4 139.4L421.6 174.4C431.5 182.3 432.7 195.9 424.2 205.4L378.2 259.4C369.7 268.9 356.1 270.1 346.6 262.6L300.6 226.6C291.1 218.7 289.9 205.1 298.4 196.6L344.4 142.6C352.9 133.1 366.5 131.9 375.4 139.4zM240 256C240 264.8 232.8 272 224 272H192C183.2 272 176 264.8 176 256C176 247.2 183.2 240 192 240H224C232.8 240 240 247.2 240 256zM288 240H320C328.8 240 336 247.2 336 256C336 264.8 328.8 272 320 272H288C279.2 272 272 264.8 272 256C272 247.2 279.2 240 288 240zM240 352C240 360.8 232.8 368 224 368H192C183.2 368 176 360.8 176 352C176 343.2 183.2 336 192 336H224C232.8 336 240 343.2 240 352zM288 336H320C328.8 336 336 343.2 336 352C336 360.8 328.8 368 320 368H288C279.2 368 272 360.8 272 352C272 343.2 279.2 336 288 336zM256 416C264.8 416 272 423.2 272 432V464C272 472.8 264.8 480 256 480C247.2 480 240 472.8 240 464V432C240 423.2 247.2 416 256 416zM256 32C264.8 32 272 39.16 272 48V80C272 88.84 264.8 96 256 96C247.2 96 240 88.84 240 80V48C240 39.16 247.2 32 256 32z%22/></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <header id="header">
+        <div class="container nav-container">
+            <a href="#home" class="logo">FIT<span>CORE</span></a>
+            
+            <nav class="navbar">
+                <ul class="nav-links">
+                    <li><a href="#home" class="nav-link">Home</a></li>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#programs" class="nav-link">Programs</a></li>
+                    <li><a href="#diet-plans" class="nav-link">Diet Plans</a></li>
+                    <li><a href="#trainers" class="nav-link">Trainers</a></li>
+                    <li><a href="#pricing" class="nav-link">Pricing</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                    <li class="mobile-only"><a href="#" class="nav-link logged-out-only" id="mobileJoinBtn">Join Now</a></li>
+                    <li class="mobile-only"><a href="#" class="nav-link logged-in-only" id="mobileProfileBtn" style="display: none;">Dashboard</a></li>
+                    <li class="mobile-only"><a href="#" class="nav-link logged-in-only" id="mobileLogoutBtn" style="display: none;">Logout</a></li>
+                </ul>
+            </nav>
+            
+            <div class="nav-actions">
+                <a href="#" class="btn btn-primary logged-out-only" id="joinNowBtn">Join Now</a>
+                <div class="user-menu logged-in-only" style="display: none;">
+                    <a href="#" class="btn btn-outline" id="profileBtn"><i class="fas fa-columns"></i> Dashboard</a>
+                    <a href="#" class="btn btn-primary" id="logoutBtn">Logout</a>
+                </div>
+                <div class="menu-toggle" id="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Auth Modal (Login/Signup) -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            
+            <div class="auth-tabs">
+                <button class="tab-btn active" data-tab="login">Login</button>
+                <button class="tab-btn" data-tab="signup">Sign Up</button>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form active">
+                <h3>Welcome Back</h3>
+                <div class="form-group">
+                    <input type="email" id="loginEmail" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+                <p class="auth-switch">Don't have an account? <a href="#" class="switch-to-signup">Sign up</a></p>
+            </form>
+            
+            <!-- Signup Form -->
+            <form id="signupForm" class="auth-form">
+                <h3>Create Account</h3>
+                <div class="form-group">
+                    <input type="text" id="signupName" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="signupEmail" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="signupPassword" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+                <p class="auth-switch">Already have an account? <a href="#" class="switch-to-login">Login</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content text-center profile-modal-content">
+            <span class="close-modal profile-close">&times;</span>
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <h3 id="profileName">User Name</h3>
+                <p id="profileEmail" class="text-muted">user@email.com</p>
+            </div>
+            <div class="profile-details" style="margin-top: 20px; text-align: left; background: var(--bg-darker); padding: 15px; border-radius: 8px;">
+                <h4 style="margin-bottom: 10px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;">Membership Details</h4>
+                <p><strong>Status:</strong> <span id="profileMembershipStatus" style="color: var(--primary-color);">Active (Free Tier)</span></p>
+                <p><strong>Joined:</strong> <span id="profileJoinDate">Today</span></p>
+            </div>
+            
+            <div class="transaction-history" style="margin-top: 20px; text-align: left;">
+                <h4 style="margin-bottom: 10px;">Transaction History</h4>
+                <div style="overflow-x: auto; max-height: 200px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 8px;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+                        <thead style="position: sticky; top: 0; background: var(--bg-darker); z-index: 1;">
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <th style="padding: 10px; text-align: left;">Date</th>
+                                <th style="padding: 10px; text-align: left;">Plan</th>
+                                <th style="padding: 10px; text-align: left;">Amount</th>
+                                <th style="padding: 10px; text-align: left;">Method</th>
+                                <th style="padding: 10px; text-align: left;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionTableBody">
+                            <!-- Transactions will be loaded here -->
+                            <tr><td colspan="5" style="padding: 10px; text-align: center; color: var(--text-muted);">Loading transactions...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <button id="modalLogoutBtn" class="btn btn-outline btn-block" style="margin-top: 20px;">Logout</button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <h1>Transform Your Body,<br><span>Transform Your Life</span></h1>
+            <p>Push your limits, achieve your goals, and become the best version of yourself with our state-of-the-art facilities and expert trainers.</p>
+            <div class="hero-btns">
+                <a href="#" class="btn btn-primary btn-large" id="heroJoinBtn">Join Now</a>
+                <a href="#programs" class="btn btn-outline btn-large">View Programs</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section fade-in-section">
+        <div class="container about-container">
+            <div class="about-content">
+                <h2 class="section-title">About <span>FitCore</span></h2>
+                <p>At FitCore, we believe fitness is not just a hobby, it's a lifestyle. Founded in 2010, we have been helping thousands of individuals reach their peak physical condition.</p>
+                
+                <ul class="about-features">
+                    <li><i class="fas fa-check-circle"></i> 10+ Years of Experience</li>
+                    <li><i class="fas fa-check-circle"></i> Certified & Professional Trainers</li>
+                    <li><i class="fas fa-check-circle"></i> Modern & Premium Equipment</li>
+                    <li><i class="fas fa-check-circle"></i> 24/7 Gym Access</li>
+                </ul>
+                <a href="#contact" class="btn btn-primary">Learn More</a>
+            </div>
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=800&auto=format&fit=crop" alt="Gym Equipment">
+            </div>
+        </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section id="programs" class="section bg-darker fade-in-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2 class="section-title">Our <span>Programs</span></h2>
+                <p>Choose from a variety of workout programs tailored to your fitness goals.</p>
+            </div>
+            
+            <div class="grid-container programs-grid">
+                <!-- Program 1 -->
+                <div class="card program-card" onclick="openExerciseModal('Strength Training')">
+                    <div class="card-icon"><i class="fas fa-dumbbell"></i></div>
+                    <h3>Strength Training</h3>
+                    <p>Build muscle mass and increase your overall strength with our heavy lifting programs.</p>
+                </div>
+                <!-- Program 2 -->
+                <div class="card program-card" onclick="openExerciseModal('Cardio Fitness')">
+                    <div class="card-icon"><i class="fas fa-running"></i></div>
+                    <h3>Cardio Fitness</h3>
+                    <p>Improve your heart health and burn calories with high-intensity cardio sessions.</p>
+                </div>
+                <!-- Program 3 -->
+                <div class="card program-card" onclick="openExerciseModal('Personal Training')">
+                    <div class="card-icon"><i class="fas fa-user-ninja"></i></div>
+                    <h3>Personal Training</h3>
+                    <p>Get 1-on-1 guidance from our expert trainers to reach your specific goals faster.</p>
+                </div>
+                <!-- Program 4 -->
+                <div class="card program-card" onclick="openExerciseModal('Yoga & Flexibility')">
+                    <div class="card-icon"><i class="fas fa-om"></i></div>
+                    <h3>Yoga & Flexibility</h3>
+                    <p>Enhance your flexibility, balance, and mental peace with our guided yoga classes.</p>
+                </div>
+                <!-- Program 5 -->
+                <div class="card program-card" onclick="openExerciseModal('CrossFit')">
+                    <div class="card-icon"><i class="fas fa-fire-alt"></i></div>
+                    <h3>CrossFit</h3>
+                    <p>Challenge yourself with varied, high-intensity functional movements.</p>
+                </div>
+                <!-- Program 6 -->
+                <div class="card program-card" onclick="openExerciseModal('Recovery')">
+                    <div class="card-icon"><i class="fas fa-heartbeat"></i></div>
+                    <h3>Recovery</h3>
+                    <p>Optimize your muscle recovery with our specialized stretching and massage therapies.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Diet Plans Section -->
+    <section id="diet-plans" class="section fade-in-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2 class="section-title">Nutrition & <span>Diet Plans</span></h2>
+                <p>Fuel your body with the right nutrients. Choose a diet plan that fits your goal.</p>
+            </div>
+            
+            <div class="grid-container programs-grid">
+                <!-- Diet 1 -->
+                <div class="card program-card" onclick="openDietModal('Weight Loss')">
+                    <div class="card-icon"><i class="fas fa-leaf"></i></div>
+                    <h3>Weight Loss</h3>
+                    <p>Calorie deficit meals focused on high protein and fiber to burn fat effectively.</p>
+                </div>
+                <!-- Diet 2 -->
+                <div class="card program-card" onclick="openDietModal('Muscle Gain')">
+                    <div class="card-icon"><i class="fas fa-drumstick-bite"></i></div>
+                    <h3>Muscle Gain</h3>
+                    <p>Calorie surplus meals rich in complex carbs and proteins for muscle hypertrophy.</p>
+                </div>
+                <!-- Diet 3 -->
+                <div class="card program-card" onclick="openDietModal('Balanced Diet')">
+                    <div class="card-icon"><i class="fas fa-apple-alt"></i></div>
+                    <h3>Balanced Diet</h3>
+                    <p>Maintain your weight and stay healthy with a perfect macro-nutrient balance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trainers Section -->
+    <section id="trainers" class="section bg-darker fade-in-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2 class="section-title">Expert <span>Trainers</span></h2>
+                <p>Meet the professionals who will guide you on your fitness journey.</p>
+            </div>
+            
+            <div class="grid-container trainers-grid">
+                <!-- Trainer 1 -->
+                <div class="card trainer-card">
+                    <div class="trainer-img">
+                        <img src="IMG_5327.JPG.jpeg" alt="Trainer 1">
+                    </div>
+                    <div class="trainer-info">
+                        <h3>John Doe</h3>
+                        <p class="specialty">Strength & Conditioning</p>
+                        <div class="trainer-socials">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Trainer 2 -->
+                <div class="card trainer-card">
+                    <div class="trainer-img">
+                        <img src="IMG_5328.JPG.jpeg" alt="Trainer 2">
+                    </div>
+                    <div class="trainer-info">
+                        <h3>Jane Smith</h3>
+                        <p class="specialty">Yoga & Pilates</p>
+                        <div class="trainer-socials">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Trainer 3 -->
+                <div class="card trainer-card">
+                    <div class="trainer-img">
+                        <img src="IMG_5329.JPG.jpeg" alt="Trainer 3">
+                    </div>
+                    <div class="trainer-info">
+                        <h3>Mike Johnson</h3>
+                        <p class="specialty">CrossFit Expert</p>
+                        <div class="trainer-socials">
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="section bg-darker fade-in-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2 class="section-title">Membership <span>Plans</span></h2>
+                <p>Choose the perfect plan that fits your needs and budget.</p>
+            </div>
+            
+            <div class="grid-container pricing-grid">
+                <!-- Basic Plan -->
+                <div class="card pricing-card">
+                    <h3>Basic</h3>
+                    <div class="price"><span>₹</span>1999<span>/mo</span></div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Access to Gym Equipment</li>
+                        <li><i class="fas fa-check"></i> Locker Room Access</li>
+                        <li><i class="fas fa-times text-muted"></i> Group Classes</li>
+                        <li><i class="fas fa-times text-muted"></i> Personal Trainer</li>
+                        <li><i class="fas fa-times text-muted"></i> Diet Plan</li>
+                    </ul>
+                    <a href="#" class="btn btn-outline btn-block choose-plan-btn" data-plan="Basic" data-price="1999">Choose Plan</a>
+                </div>
+                
+                <!-- Standard Plan (Recommended) -->
+                <div class="card pricing-card recommended">
+                    <div class="badge">Recommended</div>
+                    <h3>Standard</h3>
+                    <div class="price"><span>₹</span>2999<span>/mo</span></div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Access to Gym Equipment</li>
+                        <li><i class="fas fa-check"></i> Locker Room Access</li>
+                        <li><i class="fas fa-check"></i> Group Classes (2/week)</li>
+                        <li><i class="fas fa-times text-muted"></i> Personal Trainer</li>
+                        <li><i class="fas fa-times text-muted"></i> Diet Plan</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary btn-block choose-plan-btn" data-plan="Standard" data-price="2999">Choose Plan</a>
+                </div>
+                
+                <!-- Premium Plan -->
+                <div class="card pricing-card">
+                    <h3>Premium</h3>
+                    <div class="price"><span>₹</span>4999<span>/mo</span></div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Access to Gym Equipment</li>
+                        <li><i class="fas fa-check"></i> Locker Room Access</li>
+                        <li><i class="fas fa-check"></i> Unlimited Group Classes</li>
+                        <li><i class="fas fa-check"></i> Personal Trainer (4/mo)</li>
+                        <li><i class="fas fa-check"></i> Custom Diet Plan</li>
+                    </ul>
+                    <a href="#" class="btn btn-outline btn-block choose-plan-btn" data-plan="Premium" data-price="4999">Choose Plan</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Gateway Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content payment-modal-content">
+            <span class="close-modal payment-close">&times;</span>
+            
+            <!-- Payment Form Container -->
+            <div id="paymentFormContainer">
+                <div class="payment-header text-center" style="margin-bottom: 20px;">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 8px;">Checkout</h3>
+                    <p class="text-muted" style="font-size: 0.85rem;">Secure payments via trusted gateways.</p>
+                </div>
+                
+                <div class="order-summary" style="background: var(--bg-darker); padding: 12px 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--border-color); font-size: 0.95rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="font-weight: bold; color: var(--text-muted);">Plan:</span>
+                        <span id="checkoutPlanName" style="color: var(--primary-color); font-weight: bold;">Standard</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; border-top: 1px solid var(--border-color); padding-top: 8px;">
+                        <span style="font-weight: bold; color: var(--text-muted);">Total:</span>
+                        <span id="checkoutPlanPrice" style="font-size: 1.1rem; font-weight: bold; color: var(--text-light);"></span>
+                    </div>
+                </div>
+
+                <div class="payment-methods-container">
+                    <div class="payment-tabs" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; padding-bottom: 5px;">
+                        <button type="button" class="pay-tab-btn active" data-paytab="upi" style="padding: 8px 12px; font-size: 0.85rem; white-space: nowrap;">UPI</button>
+                        <button type="button" class="pay-tab-btn" data-paytab="card" style="padding: 8px 12px; font-size: 0.85rem; white-space: nowrap;">Card</button>
+                        <button type="button" class="pay-tab-btn" data-paytab="netbanking" style="padding: 8px 12px; font-size: 0.85rem; white-space: nowrap;">Net Banking</button>
+                        <button type="button" class="pay-tab-btn" data-paytab="wallet" style="padding: 8px 12px; font-size: 0.85rem; white-space: nowrap;">Wallets</button>
+                        <button type="button" class="pay-tab-btn" data-paytab="cod" style="padding: 8px 12px; font-size: 0.85rem; white-space: nowrap;">Pay at Gym</button>
+                    </div>
+
+                    <form id="paymentForm">
+                        <!-- UPI Section -->
+                        <div id="upi" class="pay-method-content active">
+                            <p class="text-muted" style="margin-bottom: 15px; font-size: 0.85rem;">Pay instantly using UPI apps. Scan QR or enter UPI ID.</p>
+                            <div class="form-group">
+                                <label style="display: block; margin-bottom: 5px; font-size: 0.85rem; color: var(--text-muted);">Enter UPI ID</label>
+                                <input type="text" placeholder="username@upi" style="width: 100%; padding: 10px; font-size: 0.9rem; background-color: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-light);">
+                            </div>
+                            <div class="text-center" style="margin: 15px 0;">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="QR Code" style="width: 100px; margin: 0 auto; border-radius: 8px; background: white; padding: 5px;">
+                                <p style="font-size: 0.75rem; margin-top: 8px; color: var(--text-muted);">Scan QR to pay</p>
+                            </div>
+                        </div>
+
+                        <!-- Card Section -->
+                        <div id="card" class="pay-method-content">
+                            <p class="text-muted" style="margin-bottom: 15px; font-size: 0.85rem;">Securely pay using Credit/Debit Card.</p>
+                            <div class="form-group">
+                                <label style="display: block; margin-bottom: 5px; font-size: 0.85rem; color: var(--text-muted);">Name on Card</label>
+                                <input type="text" placeholder="John Doe" style="width: 100%; padding: 10px; font-size: 0.9rem; background-color: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-light);">
+                            </div>
+                            <div class="form-group">
+                                <label style="display: block; margin-bottom: 5px; font-size: 0.85rem; color: var(--text-muted);">Card Number</label>
+                                <div style="position: relative;">
+                                    <input type="text" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" style="width: 100%; padding: 10px 10px 10px 35px; font-size: 0.9rem; background-color: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-light);">
+                                    <i class="far fa-credit-card" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                                </div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div class="form-group">
+                                    <label style="display: block; margin-bottom: 5px; font-size: 0.85rem; color: var(--text-muted);">Expiry Date</label>
+                                    <input type="text" placeholder="MM/YY" maxlength="5" style="width: 100%; padding: 10px; font-size: 0.9rem; background-color: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-light);">
+                                </div>
+                                <div class="form-group">
+                                    <label style="display: block; margin-bottom: 5px; font-size: 0.85rem; color: var(--text-muted);">CVV</label>
+                                    <input type="password" placeholder="123" maxlength="3" style="width: 100%; padding: 10px; font-size: 0.9rem; background-color: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-light);">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Net Banking Section -->
+                        <div id="netbanking" class="pay-method-content">
+                            <p class="text-muted" style="margin-bottom: 15px; font-size: 0.85rem;">Pay directly from your bank account.</p>
+                            <div class="form-group">
+                                <label style="display: block; margin-bottom: 5px; font-size: 0.85rem; color: var(--text-muted);">Select Bank</label>
+                                <select style="width: 100%; padding: 10px; background-color: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-light); font-family: 'Roboto', sans-serif; font-size: 0.9rem;">
+                                    <option>State Bank of India (SBI)</option>
+                                    <option>HDFC Bank</option>
+                                    <option>ICICI Bank</option>
+                                    <option>Axis Bank</option>
+                                    <option>Kotak Mahindra Bank</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Wallet Section -->
+                        <div id="wallet" class="pay-method-content">
+                            <p class="text-muted" style="margin-bottom: 15px; font-size: 0.85rem;">Use your digital wallet for quick payments.</p>
+                            <div class="form-group">
+                                <label style="display: block; margin-bottom: 5px; font-size: 0.85rem; color: var(--text-muted);">Select Wallet</label>
+                                <select style="width: 100%; padding: 10px; background-color: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-light); font-family: 'Roboto', sans-serif; font-size: 0.9rem;">
+                                    <option>Paytm</option>
+                                    <option>Amazon Pay</option>
+                                    <option>PhonePe Wallet</option>
+                                    <option>MobiKwik</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label style="display: block; margin-bottom: 5px; font-size: 0.85rem; color: var(--text-muted);">Mobile Number</label>
+                                <input type="text" placeholder="10-digit mobile number" style="width: 100%; padding: 10px; font-size: 0.9rem; background-color: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-light);">
+                            </div>
+                        </div>
+
+                        <!-- COD / Pay at Gym Section -->
+                        <div id="cod" class="pay-method-content">
+                            <p class="text-muted" style="margin-bottom: 15px; font-size: 0.85rem;">Pay when you arrive at our facility.</p>
+                            <div class="text-center" style="padding: 15px; background: var(--bg-darker); border-radius: 8px; border: 1px dashed var(--border-color);">
+                                <i class="fas fa-money-bill-wave" style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 10px;"></i>
+                                <h4 style="font-size: 1.1rem;">Pay at the Front Desk</h4>
+                                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">Membership activates upon payment.</p>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-block" id="payNowBtn" style="margin-top: 15px; font-size: 1rem; padding: 12px;">
+                            <i class="fas fa-lock" style="margin-right: 8px;"></i> Pay Now
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Payment Success Container (Hidden by default) -->
+            <div id="paymentSuccessContainer" style="display: none; text-align: center; padding: 30px 10px;">
+                <div style="width: 80px; height: 80px; background: rgba(40, 167, 69, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                    <i class="fas fa-check-circle" style="font-size: 3rem; color: #28a745;"></i>
+                </div>
+                <h3 style="font-size: 1.8rem; margin-bottom: 10px; color: #28a745;">Payment Done!</h3>
+                <p style="color: var(--text-muted); margin-bottom: 25px; font-size: 0.95rem;">Your transaction was successful and your membership is now active.</p>
+                
+                <div style="background: var(--bg-darker); padding: 15px; border-radius: 8px; margin-bottom: 25px; text-align: left; border: 1px solid var(--border-color);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem;">
+                        <span style="color: var(--text-muted);">Transaction ID:</span>
+                        <span style="font-family: monospace; color: var(--text-light);">TXN<span id="successTxnId"></span></span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem;">
+                        <span style="color: var(--text-muted);">Plan:</span>
+                        <span id="successPlanName" style="color: var(--text-light); font-weight: bold;"></span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                        <span style="color: var(--text-muted);">Amount Paid:</span>
+                        <span id="successAmount" style="color: var(--primary-color); font-weight: bold;"></span>
+                    </div>
+                </div>
+                
+                <button type="button" class="btn btn-primary btn-block" id="viewProfileBtn" style="padding: 12px;">
+                    View Profile
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exercise Modal -->
+    <div id="exerciseModal" class="modal">
+        <div class="modal-content large-modal-content">
+            <span class="close-modal exercise-close">&times;</span>
+            <div class="text-center" style="margin-bottom: 25px;">
+                <h3 id="exerciseModalTitle" style="font-size: 1.8rem; margin-bottom: 10px; color: var(--primary-color);">Program Exercises</h3>
+                <p class="text-muted">Here are the recommended exercises for this program.</p>
+            </div>
+            
+            <div id="exerciseList" class="exercise-grid" style="max-height: 400px; overflow-y: auto; padding-right: 10px;">
+                <!-- Exercises will be injected here via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Diet Modal -->
+    <div id="dietModal" class="modal">
+        <div class="modal-content large-modal-content">
+            <span class="close-modal diet-close">&times;</span>
+            <div class="text-center" style="margin-bottom: 25px;">
+                <h3 id="dietModalTitle" style="font-size: 1.8rem; margin-bottom: 10px; color: var(--primary-color);">Diet Plan</h3>
+                <p class="text-muted">Sample full-day meal plan for your goal.</p>
+            </div>
+            
+            <div id="dietList" style="display: grid; grid-template-columns: 1fr; gap: 15px; max-height: 400px; overflow-y: auto; padding-right: 10px;">
+                <!-- Meals will be injected here via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="section fade-in-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2 class="section-title">Client <span>Reviews</span></h2>
+                <p>See what our members have to say about their FitCore experience.</p>
+            </div>
+            
+            <div class="grid-container testimonials-grid">
+                <div class="card testimonial-card">
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="review-text">"Joining FitCore was the best decision I've made. The trainers are incredibly supportive and the equipment is top-notch. I've lost 20lbs in 3 months!"</p>
+                    <div class="client-info">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Client">
+                        <div>
+                            <h4>David Wilson</h4>
+                            <p>Member for 1 year</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card testimonial-card">
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="review-text">"The atmosphere here is amazing. Everyone is focused and it really motivates you to push harder. The premium plan with the diet guide changed my life."</p>
+                    <div class="client-info">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Client">
+                        <div>
+                            <h4>Sarah Jenkins</h4>
+                            <p>Member for 6 months</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BMI Calculator Section -->
+    <section id="bmi-calculator" class="section bg-darker fade-in-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2 class="section-title">Calculate Your <span>BMI</span></h2>
+                <p>Find out your Body Mass Index to determine your fitness goals.</p>
+            </div>
+            
+            <div class="bmi-container">
+                <div class="bmi-form">
+                    <div class="form-group">
+                        <label style="display: block; margin-bottom: 8px; color: var(--text-muted);">Weight (kg)</label>
+                        <input type="number" id="bmiWeight" placeholder="e.g. 70" style="width: 100%; padding: 12px; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 5px; color: var(--text-light);">
+                    </div>
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label style="display: block; margin-bottom: 8px; color: var(--text-muted);">Height (cm)</label>
+                        <input type="number" id="bmiHeight" placeholder="e.g. 175" style="width: 100%; padding: 12px; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 5px; color: var(--text-light);">
+                    </div>
+                    <button type="button" id="calculateBmiBtn" class="btn btn-primary btn-block" style="margin-top: 20px;">Calculate BMI</button>
+                </div>
+                
+                <div class="bmi-result text-center">
+                    <h3 style="margin-bottom: 10px; color: var(--text-muted);">Your BMI</h3>
+                    <div id="bmiValue" style="font-size: 3rem; font-weight: bold; color: var(--primary-color); margin-bottom: 10px;">0.0</div>
+                    <div id="bmiStatus" style="font-size: 1.2rem; font-weight: 600; color: var(--text-light);">Enter values</div>
+                    <p id="bmiMessage" style="margin-top: 15px; font-size: 0.9rem; color: var(--text-muted);">Please enter your weight and height to calculate your Body Mass Index.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call To Action Section -->
+    <section id="cta" class="cta-section">
+        <div class="cta-overlay"></div>
+        <div class="container cta-content text-center">
+            <h2>Ready To Change Your Life?</h2>
+            <p>Don't wait for tomorrow. Start your fitness journey today and see the results you've always dreamed of.</p>
+            <a href="#pricing" class="btn btn-primary btn-large">Start Your Fitness Journey</a>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section fade-in-section">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2 class="section-title">Contact <span>Us</span></h2>
+                <p>Have questions? We'd love to hear from you.</p>
+            </div>
+            
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Get In Touch</h3>
+                    <p>Fill out the form or contact us directly using the information below.</p>
+                    
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Location</h4>
+                            <p>123 Fitness Street, Gym City, NY 10001</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>+1 (555) 123-4567</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>info@fitcore.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>Working Hours</h4>
+                            <p>Mon - Fri: 5:00 AM - 11:00 PM<br>Sat - Sun: 6:00 AM - 9:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <input type="text" id="name" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="subject" placeholder="Subject" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="message" rows="5" placeholder="Your Message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-brand">
+                <a href="#home" class="logo">FIT<span>CORE</span></a>
+                <p>Your ultimate destination for fitness, health, and well-being. Join us and transform your life today.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#programs">Programs</a></li>
+                    <li><a href="#trainers">Trainers</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 FitCore. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#home" id="backToTop" class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+</html>
